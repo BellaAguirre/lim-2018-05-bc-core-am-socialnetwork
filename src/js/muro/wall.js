@@ -118,6 +118,13 @@ window.showPost  = (callback) =>{
       for (const i in posts) {
         for (const key in datos) {
           if(posts[i].idUser === key){
+            let date =  posts[i].timeData;
+            console.log(date);
+            
+            // let d = Date.parse(date);
+            // console.log(Date.parse(date));
+            var newd = new Date(date)
+            console.log(newd.toLocaleString());
             const stats = {
               id: i,
               uid: posts[i].idUser,
@@ -125,7 +132,7 @@ window.showPost  = (callback) =>{
               photoUser: datos[key].photoURL, 
               post: posts[i].post,
               likes:posts[i].likes,
-              timeData: posts[i].timeData,
+              timeData: newd.toLocaleString(),
               privacy: posts[i].privacy,
             }
             arrayPostUser.push(stats);
@@ -218,7 +225,7 @@ window.showProfile  = (currentUser) =>{
 window.sendPostFirebase = (callback,currentUser,textPost,privacy) => {
   switch (modo) {
     case create:
-      const userId = currentUser.uid
+      const userId = currentUser.uid;
       let postData = {
           idUser: userId,
           post: textPost.value,
@@ -226,7 +233,7 @@ window.sendPostFirebase = (callback,currentUser,textPost,privacy) => {
           likes: 0,
           likeUser: {},
           type: 'receta',
-          timeData: new Date(),
+          timeData: firebase.database.ServerValue.TIMESTAMP,
       };
       //para tener una nueva llave en la colección posts
       const newpostKey = firebase.database().ref(`/posts`).push().key;
@@ -269,8 +276,7 @@ calculateLike(dbPost, userId);
 }
 
 window.calculateLike = (dbRef, userId) => {
-  
-  dbRef.transaction((post) => {
+    dbRef.transaction((post) => {
     if (post) {
       if(!post.hasOwnProperty('likeUser')){
           post.likeUser = {}

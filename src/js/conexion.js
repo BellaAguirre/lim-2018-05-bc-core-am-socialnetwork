@@ -1,9 +1,9 @@
 const config = {
-  apiKey: "AIzaSyATCT7ucluJ0oGG7LdZCcmJSixpGkVar1Q",
-  authDomain: "usuarios-436bc.firebaseapp.com",
-  databaseURL: "https://usuarios-436bc.firebaseio.com",
-  projectId: "usuarios-436bc",
-  storageBucket: "usuarios-436bc.appspot.com",
-  messagingSenderId: "1028309699631"
-  };
-  firebase.initializeApp(config);
+  apiKey: "AIzaSyBFQDhuQ7kwO9F438f-knjh130wez8NC8I",
+  authDomain: "socialsweet-5860b.firebaseapp.com",
+  databaseURL: "https://socialsweet-5860b.firebaseio.com",
+  projectId: "socialsweet-5860b",
+  storageBucket: "socialsweet-5860b.appspot.com",
+  messagingSenderId: "219719471795"
+};
+firebase.initializeApp(config);
