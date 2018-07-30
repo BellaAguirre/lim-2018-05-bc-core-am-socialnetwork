@@ -293,7 +293,9 @@ window.updateLike = (dbRef) => {
 
   dbRef.on('value', snap => {
     const postEval = snap.val();
-     const likepost = Object.values(postEval.likeUser);
+    console.log(postEval);
+    if(postEval.likeUser !== null) {
+      const likepost = Object.values(postEval.likeUser);
        for (const key in likepost) {
          if (likepost[key].hasOwnProperty('estado')) {
            if(likepost[key].estado === true){
@@ -301,6 +303,7 @@ window.updateLike = (dbRef) => {
            }
          }
        }
+    }
    })
    dbRef.update({
      likes: count,
