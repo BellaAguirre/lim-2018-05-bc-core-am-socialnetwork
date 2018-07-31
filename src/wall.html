@@ -9,51 +9,77 @@
       <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"/>
     <link rel="stylesheet" type="text/css" href="css/bootstrap-social.css"/>
+    <link rel="icon" type="image/png" href="img/logoPrincipal.png" />
     <title>Social Sweet</title>
   </head>
   <body>
     <header class="col-12" id="socialHeader"> 
-      <img src="img/LogoPrincipal.png" alt="LogoPrincipal" id="logoPrincipal" class= "inherit" /> 
-      <div class="input-group col-9" id="search">
+      <img src="img/LogoPrincipal.png" alt="LogoPrincipal" id="logoPrincipal" class= "inherit"/> 
+      <div class="input-group col-9 col-md-3" id="search">
         <input type="search" class="form-control" id="searchInput" placeholder="Buscar" />
         <span class="input-group-btn" id="searchIcon">
           <button class="btn" id="searchButton" type="button" ><span class="fas fa-search" ></span></button>
         </span>
       </div>
-      <img src="img/settings.png" alt="settings icon" id="settingsIcon" class="left"/>
-      <p class="none left" id="settingsText">Configuración</p>
-    </header>
-    <main>
-      <img src="img/pencil.png" alt="write post button" id="posting" class= "inherit"/>
-      <div class="col-10 none" id="post" >
-        <div id="backIcon-container">
-          <img src="img/error.png" alt="back to wall" id="backIcon"/>
+      <div class="none col-md-6 left" id="channelsMenu">
+        <div class="col-2 containerIcon">
+          <img class="menuIcons" id="inspirationIconDesktop" src="img/dust.png" alt="inspiration icon"/>
+          <p class="textIcon">Inspiración</p> 
         </div>
-        <p id="titlePublic">Publicación</p>
+        <div class="col-2 containerIcon">
+          <img class="menuIcons" id="marketIconDesktop" src="img/cart.png" alt="sell/buy icon"/>
+          <p class="textIcon">Tienda</p>
+        </div>
+        <div class="col-2 containerIcon">
+          <img class="menuIcons" id="menuIconDesktop" src="img/menu.png" alt="recepy icon"/>
+          <p class="textIcon">Recetas</p>
+        </div>
+        <div class="col-2 containerIcon">
+          <img class="menuIcons" id="questionIconDesktop" src="img/question.png" alt="doubts icon"/>
+          <p class="textIcon">Dudas</p>
+        </div>
+        <div class="col-2 containerIcon">
+          <img class="menuIcons" id="profileIconDesktop" src="img/chef.png" alt="user icon"/>
+          <p class="textIcon">Perfil</p>
+        </div>
+      </div>
+      <img src="img/settings.png" alt="settings icon" id="settingsIcon" class="left"/>
+      <p class= "none left" id="settingsText">Configuración</p>
+    </header>
+    <main class="col-12">     
+      <img src="img/pencil.png" alt="write post button" id="posting" class= "inherit"/>
+      <div id="containerInfo" class= "none col-md-5">
+        <div id="profilecontainer" class="none"></div>
+      </div>
+      <div class="col-md-5 none left" id="post" >
+        <div id="backIcon-container">
+          <img src="img/error.png" alt="back to wall" id="backIcon" class="none"/>
+        </div> 
+        <p id="titlePublic" class="none">Publicación</p>
+        <p id="titleEdit" class="none">Editar publicación:</p>
         <form class="form-group" id="postForm">
           <textarea class="form-control" rows="5" id="postText" placeholder="¿Qué quieres decir hoy?"></textarea>
-          <button class="form-control" id="postImage">Elegir foto</button>      
-        </form>        
-        <div class="form-group" id="privacityContainer" >
+          <button class="none form-control" id="postImage">Elegir foto</button>      
+        </form>      
+        <div class="form-group none" id="privacityContainer" >
           <select title="Privacidad:" class="privacityForm col-5 left" id="selectPrivacy" >
-            <option value="Publico"> Público </option>
-            <option value="Privado"> Privado </option>         
+            <option value="Publico">Público </option>
+            <option value="Privado">Privado </option>         
           </select>
-          <input type="button" id="publicButton" class="col-5" value="Publicar" />
-        </div>    
-     </div> 
-      <div id="postcontainer" class="inherit"> </div>
+          <input type="button" id="publicButton" value="Publicar" class="col-5"/>
+        </div>  
+      </div> 
+      <div id="postcontainer" class="col-md-6 left"> </div>
       <div id="settingsOptions" class="none col-8">
         <button class="settingsButton" >Editar perfil</button>    
         <button class="settingsButton" id="logout">Cerrar sesión</button>    
         <button class="settingsButton" id="backButton" >Volver</button>    
       </div>
-      <div id="profilecontainer" class="none"></div>
-      <div id="userPostcontainer" class="none"></div>
+      <div id="userPostcontainer" class="col-md-6 none left"> </div>
     </main>
-    <footer class="fixed-bottom"> 
+    <footer class="fixed-bottom col-12" id="menuMobile"> 
       <div class="col-2 containerIcon">
-        <img class="menuIcons" id="inspirationIcon" src="img/dust.png" alt="inspiration icon" />
+        <img class="menuIcons" id="inspirationIcon" src="img/dust.png" alt="inspiration icon"/>
         <p class="textIcon">Inspiración</p> 
       </div>
       <div class="col-2 containerIcon">
@@ -73,7 +99,7 @@
         <p class="textIcon">Perfil</p>
       </div>
     </footer>
-    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>    
     <script src="js/conexion.js"></script>
     <script src="js/muro/wall.js"></script>
     <script src="js/muro/muro.js"></script>

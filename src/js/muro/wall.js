@@ -13,7 +13,6 @@ window.logoutwall = (callback) => {
     callback()
   }).catch((error) => {
   });
-
 }
 
 window.showPostHtml = (userWithPost) => {
@@ -22,13 +21,16 @@ window.showPostHtml = (userWithPost) => {
   for (const i in userWithPost) {
     if(userWithPost[i].privacy === 'Publico' && userId === userWithPost[i].uid) {
       postcontainer.innerHTML += ` 
-      <div class="col-11 postwall" id="${userWithPost[i].id}">
+      <div class="postwall" id="${userWithPost[i].id}">
         <div id="headerpost-container">
           <input type="button" class="col-2" hidden/>
           <img src="${userWithPost[i].photoUser}" class="initial">
           <div id="infoPost" class="col-8">
-            <h1 class="creatorName">${userWithPost[i].name}</h1>
-            <p id="datePost" class="col-8">${userWithPost[i].timeData}</p>
+          <div class="creatorNameContainer">
+                      <h1 class="creatorName">${userWithPost[i].name}</h1>
+          </div> 
+            
+            <p id="datePost" class="col-5 col-md-4 col-lg-3">${userWithPost[i].timeData}</p>
             <img src="img/icon.png" alt="private icon" id="privateIcon">
           </div>
           <div id="dropdown-container" class="show">
@@ -54,13 +56,15 @@ window.showPostHtml = (userWithPost) => {
       `;
     } else if(userWithPost[i].privacy === 'Publico') {
       postcontainer.innerHTML += ` 
-      <div class="col-11 postwall" id="${userWithPost[i].id}">
+      <div class="postwall" id="${userWithPost[i].id}">
         <div id="headerpost-container">
           <input type="button" class="col-2" hidden/>
           <img src="${userWithPost[i].photoUser}" class="initial">
           <div id="infoPost" class="col-8">
-            <h1 class="creatorName">${userWithPost[i].name}</h1>
-            <p id="datePost" class="col-8">${userWithPost[i].timeData}</p>
+          <div class="creatorNameContainer">
+              <h1 class="creatorName">${userWithPost[i].name}</h1>
+          </div> 
+            <p id="datePost" class="col-5 col-md-4 col-lg-3">${userWithPost[i].timeData}</p>
             <img src="img/icon.png" alt="private icon" id="privateIcon">
           </div>
           <div id="dropdown-container" class="show">
@@ -93,6 +97,8 @@ window.postEdit = (idPost, post, privacyEdit, like) => {
   document.getElementById('post').classList.replace('none', 'inherit');
   document.getElementById('postcontainer').classList.replace('inherit', 'none');
   document.getElementById('posting').classList.replace('inherit', 'none');
+  titlePublic.classList.add('none');
+  titleEdit.classList.remove('none');
   btnEnviar.value = update;
   modo = update;
   editPost.idPost = idPost;
@@ -117,6 +123,8 @@ window.showPost  = (callback) =>{
       for (const i in posts) {
         for (const key in datos) {
           if(posts[i].idUser === key){
+            let date =  posts[i].timeData;
+            var newdate = new Date(date);
             const stats = {
               id: i,
               uid: posts[i].idUser,
@@ -125,14 +133,13 @@ window.showPost  = (callback) =>{
               post: posts[i].post,
               likes:posts[i].likes,
               likeUser: posts[i].likeUser,
-              timeData: posts[i].timeData,
+              timeData: newdate.toLocaleString(),
               privacy: posts[i].privacy,
             }
             arrayPostUser.push(stats);
           }
         }
       }
-      console.log(arrayPostUser);
       showPostHtml(arrayPostUser);
       showPostHtmlPerfil(arrayPostUser);
     });
@@ -145,7 +152,7 @@ window.showProfile  = (currentUser) =>{
     <div class="userInfo col-12">
       <input type="button" class="initial col-12" hidden/>
       <img src="${currentUser.photoURL}" class="initial" id="userButton">
-      <h1 class="creatorName col-12" id="profileName">${currentUser.displayName}</h1>
+        <h1 class="creatorName col-12" id="profileName">${currentUser.displayName}</h1>
       <table  class="col-7" id="tableInfo">
         <thead id="tablever">
           <tr>
@@ -163,18 +170,21 @@ window.showProfile  = (currentUser) =>{
         </tbody>
       </table>
     </div>
-    <div class="col-12" role="group"  id="menuProfile">
-      <button type="button" class="dropdown-toggle col-6 menuButton" data-toggle="dropdown" >
-         <img class="iconsProfile" id="inspirationIconProfile" src="img/dust-on.png" alt="inspiration icon">
-          Inspiración
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#"> <img class="iconsProfile" id="marketIconProfile" src="img/cart-on.png" alt="sell/buy icon"> Market</a>
-        <a class="dropdown-item" href="#"> <img class="iconsProfile" id="menuIconProfile" src="img/menu-on.png" alt="recepy icon"> Recetas</a>
-        <a class="dropdown-item" href="#"> <img class="iconsProfile" id="questionIconProfile" src="img/question-on.png" alt="doubts icon"> Dudas</a>
-      </div>
-      <button type="button" class="col-5 menuButton"> <img class="iconsProfile" src="img/star.png" alt="fav icon">Favoritos</button>
-    </div>
+    <div class="none" id="postMenuContainer">
+            <h3 class="none" id="titlePostMenu">Mis Posts</h3>
+            <div class="col-12" role="group"  id="menuProfile">
+                      <button type="button" class="dropdown-toggle col-6 menuButton" data-toggle="dropdown" >
+                            <img class="iconsProfile" id="inspirationIconProfile" src="img/dust-on.png" alt="inspiration icon">
+                        Inspiración
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#"> <img class="iconsProfile" id="marketIconProfile" src="img/cart-on.png" alt="sell/buy icon"> Market</a>
+                        <a class="dropdown-item" href="#"> <img class="iconsProfile" id="menuIconProfile" src="img/menu-on.png" alt="recepy icon"> Recetas</a>
+                        <a class="dropdown-item" href="#"> <img class="iconsProfile" id="questionIconProfile" src="img/question-on.png" alt="doubts icon"> Dudas</a>
+                      </div>
+                    <button type="button" class="col-5 menuButton"> <img class="iconsProfile" src="img/star.png" alt="fav icon">Favoritos</button>
+            </div>
+        </div>   
     `;
 }
 window.showPostHtmlPerfil = (userWithPost) => {
@@ -182,15 +192,17 @@ window.showPostHtmlPerfil = (userWithPost) => {
   userPostcontainer.innerHTML = '';
   for (const i in userWithPost) {
     if(userId === userWithPost[i].uid) {
-      console.log(userWithPost[i].likeUser);
       userPostcontainer.innerHTML += ` 
-      <div class="col-11 postwall" id="${userWithPost[i].id}" >
+      <div class="postwall" id="${userWithPost[i].id}" >
         <div id="headerpost-container">
           <input type="button" class="initial" hidden/>
           <img src="${userWithPost[i].photoUser}" class="initial">
           <div id="infoPost" class="col-8">
-            <h1 class="creatorName">${userWithPost[i].name}</h1>
-            <p id="datePost" class="col-8">${userWithPost[i].timeData}</p>
+          <div class="creatorNameContainer">
+              <h1 class="creatorName">${userWithPost[i].name}</h1>
+          </div> 
+           
+            <p id="datePost" class="col-5 col-md-4 col-lg-3">${userWithPost[i].timeData}</p>
             <img src="img/icon.png" alt="private icon" id="privateIcon">
           </div>
           <div id="dropdown-container" class="show">
@@ -229,7 +241,7 @@ window.sendPostFirebase = (callback,currentUser,textPost,privacy) => {
           likes: 0,
           likeUser: {[userId]: 0},
           type: 'receta',
-          timeData: new Date(),
+          timeData: firebase.database.ServerValue.TIMESTAMP,
       };
       //para tener una nueva llave en la colección posts
       const newpostKey = firebase.database().ref(`/posts`).push().key;
@@ -243,7 +255,7 @@ window.sendPostFirebase = (callback,currentUser,textPost,privacy) => {
       firebase.database().ref('posts/' + editPost.idPost).update({
         post: textPost.value,
         privacy: privacityPost.value,
-        timeData: new Date(),
+        timeData: firebase.database.ServerValue.TIMESTAMP,
       }); 
       btnEnviar.value = create;
       modo = create;
@@ -262,7 +274,7 @@ window.calculateLike = (dbRef, userId) => {
   dbRef.transaction((post) => {
     if (post) {
       if(!post.hasOwnProperty('likeUser')){
-          post.likeUser = {}
+          post.likeUser = {};
           post.likeUser[userId] = {
             estado : true,
             img: 'imgLike',
@@ -282,18 +294,16 @@ window.calculateLike = (dbRef, userId) => {
         post.likeUser[userId].estado = true;
         post.likeUser[userId].img = 'imgLike';
       } 
-  }   
-}
-return post;
-});
-updateLike(dbRef)
+    }   
+  }
+  return post;
+  });
+  updateLike(dbRef);
 }
 window.updateLike = (dbRef) => {
   let count = 0;
-
   dbRef.on('value', snap => {
     const postEval = snap.val();
-    console.log(postEval);
     if(postEval.likeUser !== null) {
       const likepost = Object.values(postEval.likeUser);
        for (const key in likepost) {
@@ -303,9 +313,9 @@ window.updateLike = (dbRef) => {
            }
          }
        }
-    }
-   })
+      }
+   });
    dbRef.update({
      likes: count,
-     }); 
+    }); 
 }

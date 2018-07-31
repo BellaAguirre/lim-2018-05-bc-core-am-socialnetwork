@@ -6,6 +6,7 @@ body {
 main {
   margin-bottom: 3.5em;
   margin-top: 3.5em;
+  
 }    
 
 #socialHeader {
@@ -120,6 +121,10 @@ main {
   margin-bottom: -0.2em;
 }
 
+.creatorNameContainer{
+  overflow: auto;
+}
+
 .creatorName {
   font-family: 'Titillium Web', sans-serif;
   font-size: 0.9em;
@@ -127,11 +132,17 @@ main {
   float: left;
 }
 
-#datePost {
-  font-size: 0.6em;
+#userPostcontainer, #postcontainer{
+  padding: 0 !important;
+  margin-bottom: 3.5em !important;
+}
+
+#datePost{
+  font-size: 0.5em;
   margin-top: -0.5em;
   margin-bottom: 0;
-  padding-right: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 #privateIcon, 
@@ -191,14 +202,14 @@ main {
   border: 1px solid #C4C4C4;
   margin-top: 1.5em;
 }
-
-#post {
-  margin-left: 8%;
+#post{
+    margin-left: 0;
 }
 
 .postwall {
   margin-left: 4%;
   padding: 0;
+  margin-left: 0;
 }
 
 #privacityContainer {
@@ -337,10 +348,11 @@ main {
   width: 1.5em;
 }
 
-#menuProfile {
+#menuProfile{
   border-top: 1px solid #91949D;
   border-bottom: 1px solid #91949D;
   padding: 0;
+  margin-top: 1em;
 }
 
 .menuButton {
@@ -386,6 +398,105 @@ footer {
   float: left;
 }
 
-.right {
+.right{
   float: right;
 }
+
+.auto{
+  overflow: auto;
+}
+
+.initial{
+  display: initial;
+}
+
+
+/*Móviles en horizontal o tablets en vertical */
+@media (min-width: 768px) {
+  #menuMobile{
+    display: none;
+  }
+
+  #channelsMenu{
+    display: inherit !important;
+    height: 2.5em !important;
+    margin-top: 0.4em ;
+    margin-left: 5em;
+  }
+
+  .containerIcon{
+    height: 2em;
+    margin-bottom: 0;
+  }
+
+  .menuIcons{
+    width: 2em; 
+    margin-top: 0;
+  }
+
+  .textIcon{
+    margin-bottom: 0;  
+  }
+
+  #settingsIcon{
+    float: right;
+  }
+
+  #posting{
+    display: none;
+  }
+  
+  #containerInfo{
+    display: inherit !important;
+    height: 40em;
+    float: left;
+  }
+
+  .userInfo{
+    margin-top: 1.2em;
+    margin-left: -0.5em;
+    margin-bottom: 1em;
+  }
+
+  #profilecontainer{
+    display:inherit !important;
+  }
+
+  #titlePostMenu{
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 1em;
+    font-weight: bold; 
+    text-align: center; 
+  }
+
+  #post{
+    display: inherit !important;
+    margin-left: 2.3em !important;
+  }
+
+  #postText{
+    height: 3em;
+  }
+
+  #userPostcontainer, #postcontainer{
+    margin-left: 0.3em !important;
+    margin-bottom: 3.5em !important;
+  }
+   
+}
+  
+  /*Tablets en horizonal y escritorios normales */
+@media (min-width: 1024px) {
+  #post{
+    margin-left: 3.2em !important;
+  }
+
+  #channelsMenu{
+    margin-left: 9em !important;
+  }
+
+  .menuIcons{
+    margin-left: 0.4em;
+  }
+}
+  
