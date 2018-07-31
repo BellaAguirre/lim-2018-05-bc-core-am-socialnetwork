@@ -1,12 +1,3 @@
-const create = 'Publicar';
-const update = 'Guardar';
-let modo = create;
-let editPost = {
-  idPost: '',
-  post: '',
-  privacyEdit: '',
-  like: '',
-}
 //Cerrando sesion
 window.logoutwall = (callback) => {
   firebase.auth().signOut().then(() => {
@@ -37,7 +28,7 @@ window.showPostHtml = (userWithPost) => {
               <img src="img/more.png" alt="more icon" id="moreIcon">
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownPost">
-              <a class="dropdown-item dropdown-text" href="#" onclick="postEdit('${userWithPost[i].id}','${userWithPost[i].post}','${userWithPost[i].privacy}','${userWithPost[i].likes}')">Editar</a>
+              <a class="dropdown-item dropdown-text" href="#" onclick="postEdit()">Editar</a>
               <a class="dropdown-item dropdown-text" href="#" data-toggle="modal" data-target="${'#modal' + userWithPost[i].id}">Eliminar</a>
               <a class="dropdown-item dropdown-text" href="#">Guardar</a>
               <a class="dropdown-item dropdown-text" href="#">Cancelar</a>
@@ -62,11 +53,19 @@ window.showPostHtml = (userWithPost) => {
               </div>
             </div>
           </div>
-        </div>  
-        <section id="postSection">
-          <textarea id="postTextSection" class="col-12 form-control" rows="5" >${userWithPost[i].post}</textarea>
-          <p id="postImageSection" class="col-12">Foto</p>      
-        </section> 
+        </div>
+        <form>
+          <section id="postSection">
+            <textarea id="${'post' + userWithPost[i].id}" class="col-12 form-control" rows="5" >${userWithPost[i].post}</textarea>
+            <p id="postImageSection" class="col-12">Foto</p>
+            <select title="Privacidad:" class="privacityForm col-5 left" id="${'select'+userWithPost[i].id}" >
+              <option value="Publico">Público </option>
+              <option value="Privado">Privado </option>
+          </select>
+            <input type="button" class="btn btn-primary" id="${'btn' + userWithPost[i].id}" value="Guardar" onclick="savePostEdit('${userWithPost[i].id}','${userWithPost[i].post}','${userWithPost[i].privacy}')">
+          </section>
+
+        </form>
         <div id="like-container">
           <input type="button" onclick="clickPost('${userWithPost[i].id}','${userWithPost[i].likes}','${userWithPost[i].uid}')" class="likeIconImg ${userWithPost[i].likeUser !== undefined && userWithPost[i].likeUser[userId] !==undefined && userWithPost[i].likeUser[userId].estado ? 'imgLike' : 'imgDisLike'}" id="${'li'+userWithPost[i].id}"/>
           <p id="likeText"> ${userWithPost[i].likes} Me gusta</p>
@@ -109,30 +108,22 @@ window.showPostHtml = (userWithPost) => {
   }
 }
 window.postDelete = (idpost) => {
-  const userId = firebase.auth().currentUser.uid;
   firebase.database().ref().child('posts/' + idpost).remove();
   location.reload();
 }
-window.postEdit = (idPost, post, privacyEdit, like) => {
-  document.getElementById('post').classList.replace('none', 'inherit');
-  document.getElementById('postcontainer').classList.replace('inherit', 'none');
-  document.getElementById('posting').classList.replace('inherit', 'none');
-  titlePublic.classList.add('none');
-  titleEdit.classList.remove('none');
-  btnEnviar.value = update;
-  modo = update;
-  editPost.idPost = idPost;
-  editPost.post = post;
-  editPost.privacyEdit = privacyEdit;
-  editPost.like = like;
-  postEditNow(post,privacyEdit)
+window.postEdit = () => {
+ 
 }
+window.savePostEdit = (idPost, post,privacyEdit) => {
+  const postText = document.getElementById('post'+idPost);
+  const selectPrivacy = document.getElementById('select' + idPost);
 
-window.postEditNow = (post, privacy) => {
-  textPost.value = post;
-  privacityPost.value = privacy;
+  firebase.database().ref('posts/' + idPost).update({
+    post: postText.value,
+    privacy: selectPrivacy.value,
+    timeData: firebase.database.ServerValue.TIMESTAMP,
+  }); 
 }
-
 window.showPost  = (callback) =>{
   callback();
   firebase.database().ref().child('users').on('value', snap => {
@@ -272,8 +263,7 @@ window.showPostHtmlPerfil = (userWithPost) => {
   }
 }
 window.sendPostFirebase = (callback,currentUser,textPost,privacy) => {
-  switch (modo) {
-    case create:
+
       const userId = currentUser.uid
       let postData = {
           idUser: userId,
@@ -291,19 +281,6 @@ window.sendPostFirebase = (callback,currentUser,textPost,privacy) => {
       firebase.database().ref().update(updates);
       showPost(callback);
       showProfile(currentUser);
-      break;
-    case update:
-      firebase.database().ref('posts/' + editPost.idPost).update({
-        post: textPost.value,
-        privacy: privacityPost.value,
-        timeData: firebase.database.ServerValue.TIMESTAMP,
-      }); 
-      btnEnviar.value = create;
-      modo = create;
-      showPost(callback);
-      showProfile(currentUser);
-    break;
-  }
 }
 
 window.clickPost = (postId,likes,usid) => {
