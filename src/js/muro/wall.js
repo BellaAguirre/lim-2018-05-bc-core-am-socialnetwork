@@ -27,9 +27,8 @@ window.showPostHtml = (userWithPost) => {
           <img src="${userWithPost[i].photoUser}" class="initial">
           <div id="infoPost" class="col-8">
           <div class="creatorNameContainer">
-                      <h1 class="creatorName">${userWithPost[i].name}</h1>
+            <h1 class="creatorName">${userWithPost[i].name}</h1>
           </div> 
-            
             <p id="datePost" class="col-5 col-md-4 col-lg-3">${userWithPost[i].timeData}</p>
             <img src="img/icon.png" alt="private icon" id="privateIcon">
           </div>
@@ -39,13 +38,33 @@ window.showPostHtml = (userWithPost) => {
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownPost">
               <a class="dropdown-item dropdown-text" href="#" onclick="postEdit('${userWithPost[i].id}','${userWithPost[i].post}','${userWithPost[i].privacy}','${userWithPost[i].likes}')">Editar</a>
-              <a class="dropdown-item dropdown-text" href="#" onclick="postDelete('${userWithPost[i].id}')">Eliminar</a>
+              <a class="dropdown-item dropdown-text" href="#" data-toggle="modal" data-target="${'#modal' + userWithPost[i].id}">Eliminar</a>
               <a class="dropdown-item dropdown-text" href="#">Guardar</a>
               <a class="dropdown-item dropdown-text" href="#">Cancelar</a>
           </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="${'modal' + userWithPost[i].id}" tabindex="-1" role="dialog" aria-labelledby="${'modalLabel' + userWithPost[i].id}" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="${'modalLabel' + userWithPost[i].id}">Eliminando Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                ¿Esta seguro de eliminar este post?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger"  onclick="postDelete('${userWithPost[i].id}')">Eliminar</button>
+              </div>
+            </div>
+          </div>
         </div>  
         <section id="postSection">
-          <p id="postTextSection" class="col-12">${userWithPost[i].post}</p>
+          <textarea id="postTextSection" class="col-12 form-control" rows="5" >${userWithPost[i].post}</textarea>
           <p id="postImageSection" class="col-12">Foto</p>      
         </section> 
         <div id="like-container">
@@ -77,7 +96,7 @@ window.showPostHtml = (userWithPost) => {
           </div>
         </div>  
         <section id="postSection">
-          <p id="postTextSection" class="col-12">${userWithPost[i].post}</p>
+          <textarea id="postTextSection" class="col-12 form-control" rows="5" >${userWithPost[i].post}</textarea>
           <p id="postImageSection" class="col-12">Foto</p>      
         </section> 
         <div id="like-container">
@@ -92,6 +111,7 @@ window.showPostHtml = (userWithPost) => {
 window.postDelete = (idpost) => {
   const userId = firebase.auth().currentUser.uid;
   firebase.database().ref().child('posts/' + idpost).remove();
+  location.reload();
 }
 window.postEdit = (idPost, post, privacyEdit, like) => {
   document.getElementById('post').classList.replace('none', 'inherit');
@@ -211,19 +231,40 @@ window.showPostHtmlPerfil = (userWithPost) => {
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownPost">
               <a class="dropdown-item dropdown-text" href="#" onclick="postEdit('${userWithPost[i].id}','${userWithPost[i].post}','${userWithPost[i].privacy}','${userWithPost[i].likes}')">Editar</a>
-              <a class="dropdown-item dropdown-text" href="#" onclick="postDelete('${userWithPost[i].id}')">Eliminar</a>
+              <a class="dropdown-item dropdown-text" href="#" data-toggle="modal" data-target="${'#exampleModal' + userWithPost[i].id}">Eliminar</a>
               <a class="dropdown-item dropdown-text" href="#">Guardar</a>
               <a class="dropdown-item dropdown-text" href="#">Cancelar</a>
             </div>
           </div>  
         </div>
+        <!--Modal-->
+        <div class="modal fade" id="${'exampleModal' + userWithPost[i].id}" tabindex="-1" role="dialog" aria-labelledby=" ${'exampleModalLabel' + userWithPost[i].id}" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="${'exampleModalLabel' + userWithPost[i].id}" >Eliminando Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                ¿Esta seguro de eliminar este post?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger"  onclick="postDelete('${userWithPost[i].id}')">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <section id="postSection">
-          <p id="postTextSection" class="col-12">${userWithPost[i].post}</p>
+          <textarea id="postTextSection" class="col-12 form-control" rows="5" >${userWithPost[i].post}</textarea>
           <p id="postImageSection" class="col-12">Foto</p>      
         </section> 
         <div id="like-container">
         <input type="button" onclick="clickPost('${userWithPost[i].id}','${userWithPost[i].likes}','${userWithPost[i].idUser}')" class="likeIconImg ${userWithPost[i].likeUser !== undefined && userWithPost[i].likeUser[userId] !== undefined && userWithPost[i].likeUser[userId].estado ? 'imgLike' : 'imgDisLike'}" id="${'li'+ userWithPost[i].id}"/>
         <p id="likeText"> ${userWithPost[i].likes} Me gusta</p>
+        <button type="button" class="btn btn-primary">Guardar</button>
         </div> 
       </div> 
       `;

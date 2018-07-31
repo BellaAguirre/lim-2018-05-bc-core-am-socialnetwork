@@ -28,6 +28,7 @@ window.registerUser = (emailVal, rpasswordVal, nameUs, callbackError) => {
       'displayName': nameUs,
       'photoURL' : 'https://image.flaticon.com/icons/svg/1034/1034680.svg', 
     });
+    sendMuro.addEventListener('click', directionPageMuro,false);
   })
   .catch((error) => {
     callbackError(error);

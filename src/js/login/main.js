@@ -20,6 +20,7 @@ const btnSignUpFacebook = document.getElementById('signFacebook');
 const btnSignUpGoogle = document.getElementById('signGoogle');
 const btnSignInFacebook = document.getElementById('signIFacebook');
 const btnSignInGoogle = document.getElementById('signIGoogle');
+const sendMuro = document.getElementById('send-muro');
 
 //cambiando de clases a los formularios
 const replaceClass = (formFirst, formSecond) => {
@@ -98,7 +99,7 @@ repeatPassword.addEventListener('input', () => {
   const campo = event.target;
   menssageErrorPassword.innerHTML = '';
   addClassIcon(repeatPassword, valid);
-  passwordRepeatValid(campo.value, password.value) ? replaceClassIconValid(repeatPassword, valid) : replaceClassIconDanger(repeatPassword, valid);
+  passwordLength(campo.value) && passwordRepeatValid(campo.value, password.value) ? replaceClassIconValid(repeatPassword, valid) : replaceClassIconDanger(repeatPassword, valid);
 });
 //funcion para registrar usuario con email y password
 const userRegister = (emailValue,repeatPasswordValue, nameUser) => {
@@ -113,15 +114,18 @@ btnEnviar.addEventListener('click', () => {
   const nameUser = name.value; 
   if (passwordRepeatValid(repeatPasswordValue, password.value) === false) {
     menssageErrorPassword.innerHTML = 'Contraseña no coincide';
+    
   } else {
     userRegister(emailValue,repeatPasswordValue, nameUser);
-    replaceClass(formSingUp, formSignIn);
+    // replaceClass(formSingUp, formSignIn);
   }
 });
+
 //Direccionando al muro
 const directionPageMuro = () => {
   window.location.href = "wall.html";
 }
+
 //Inicio de sesion
 signInBtn.addEventListener('click', () => {
   const emailSing = document.getElementById('email1').value;
