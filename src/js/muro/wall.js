@@ -5,9 +5,11 @@ window.logoutwall = (callback) => {
   }).catch((error) => {
   });
 }
-
-window.showPostHtml = (userWithPost) => {
+window.showPostHtml = (userPost) => {
   const userId = firebase.auth().currentUser.uid;
+  const userWithPost = userPost.sort((a,b) => b.time - a.time);
+  console.log(userWithPost);
+  
   postcontainer.innerHTML = '';
   for (const i in userWithPost) {
     if(userWithPost[i].privacy === 'Publico' && userId === userWithPost[i].uid) {
@@ -28,7 +30,7 @@ window.showPostHtml = (userWithPost) => {
               <img src="img/more.png" alt="more icon" id="moreIcon">
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownPost">
-              <a class="dropdown-item dropdown-text" href="#" onclick="postEdit()">Editar</a>
+              <a class="dropdown-item dropdown-text" onclick="postEdit('${userWithPost[i].id}')">Editar</a>
               <a class="dropdown-item dropdown-text" href="#" data-toggle="modal" data-target="${'#modal' + userWithPost[i].id}">Eliminar</a>
               <a class="dropdown-item dropdown-text" href="#">Guardar</a>
               <a class="dropdown-item dropdown-text" href="#">Cancelar</a>
@@ -56,18 +58,17 @@ window.showPostHtml = (userWithPost) => {
         </div>
         <form>
           <section id="postSection">
-            <textarea id="${'post' + userWithPost[i].id}" class="col-12 form-control" rows="5" >${userWithPost[i].post}</textarea>
-            <p id="postImageSection" class="col-12">Foto</p>
-            <select title="Privacidad:" class="privacityForm col-5 left" id="${'select'+userWithPost[i].id}" >
+            <textarea id="${'post' + userWithPost[i].id}" class="col-12 textarea-post" rows="auto" readOnly>${userWithPost[i].post}</textarea>
+            <select title="Privacidad:" class="privacityForm col-5 none" id="${'select'+userWithPost[i].id}" >
               <option value="Publico">Público </option>
               <option value="Privado">Privado </option>
           </select>
-            <input type="button" class="btn btn-primary" id="${'btn' + userWithPost[i].id}" value="Guardar" onclick="savePostEdit('${userWithPost[i].id}','${userWithPost[i].post}','${userWithPost[i].privacy}')">
+            <input type="button" class="btn btn-primary none" id="${'btn' + userWithPost[i].id}" value="Guardar" onclick="savePostEdit('${userWithPost[i].id}','${userWithPost[i].post}','${userWithPost[i].privacy}')">
           </section>
 
         </form>
         <div id="like-container">
-          <input type="button" onclick="clickPost('${userWithPost[i].id}','${userWithPost[i].likes}','${userWithPost[i].uid}')" class="likeIconImg ${userWithPost[i].likeUser !== undefined && userWithPost[i].likeUser[userId] !==undefined && userWithPost[i].likeUser[userId].estado ? 'imgLike' : 'imgDisLike'}" id="${'li'+userWithPost[i].id}"/>
+          <input type="button" onclick="clickPost('${userWithPost[i].id}')" class="likeIconImg ${userWithPost[i].likeUser !== undefined && userWithPost[i].likeUser[userId] !==undefined && userWithPost[i].likeUser[userId].estado ? 'imgLike' : 'imgDisLike'}" id="${'li'+userWithPost[i].id}"/>
           <p id="likeText"> ${userWithPost[i].likes} Me gusta</p>
         </div> 
       </div> 
@@ -95,8 +96,7 @@ window.showPostHtml = (userWithPost) => {
           </div>
         </div>  
         <section id="postSection">
-          <textarea id="postTextSection" class="col-12 form-control" rows="5" >${userWithPost[i].post}</textarea>
-          <p id="postImageSection" class="col-12">Foto</p>      
+          <textarea id="postTextSection" class="col-12 textarea-post" rows="auto" readOnly>${userWithPost[i].post}</textarea>
         </section> 
         <div id="like-container">
           <input type="button" onclick="clickPost('${userWithPost[i].id}','${userWithPost[i].likes}','${userWithPost[i].uid}')" class="likeIconImg ${userWithPost[i].likeUser !== undefined && userWithPost[i].likeUser[userId] !== undefined && userWithPost[i].likeUser[userId].estado ? 'imgLike' : 'imgDisLike'}" id="${'li'+userWithPost[i].id}"/>
@@ -111,16 +111,21 @@ window.postDelete = (idpost) => {
   firebase.database().ref().child('posts/' + idpost).remove();
   location.reload();
 }
-window.postEdit = () => {
- 
+window.postEdit = (idPost) => {
+  const postTextEdit = document.getElementById('post'+idPost);
+  const selectPrivacyEdit = document.getElementById('select' + idPost);
+  const btnSave = document.getElementById('btn' + idPost);
+  postTextEdit.readOnly = false;
+  postTextEdit.focus();
+  btnSave.classList.replace('none','inherit');
+  selectPrivacyEdit.classList.replace('none','left');
 }
-window.savePostEdit = (idPost, post,privacyEdit) => {
-  const postText = document.getElementById('post'+idPost);
-  const selectPrivacy = document.getElementById('select' + idPost);
-
+window.savePostEdit = (idPost) => {
+  const postTextEdit = document.getElementById('post'+idPost);
+  const selectPrivacyEdit = document.getElementById('select' + idPost);
   firebase.database().ref('posts/' + idPost).update({
-    post: postText.value,
-    privacy: selectPrivacy.value,
+    post: postTextEdit.value,
+    privacy: selectPrivacyEdit.value,
     timeData: firebase.database.ServerValue.TIMESTAMP,
   }); 
 }
@@ -145,6 +150,7 @@ window.showPost  = (callback) =>{
               likes:posts[i].likes,
               likeUser: posts[i].likeUser,
               timeData: newdate.toLocaleString(),
+              time: posts[i].timeData,
               privacy: posts[i].privacy,
             }
             arrayPostUser.push(stats);
@@ -263,7 +269,6 @@ window.showPostHtmlPerfil = (userWithPost) => {
   }
 }
 window.sendPostFirebase = (callback,currentUser,textPost,privacy) => {
-
       const userId = currentUser.uid
       let postData = {
           idUser: userId,
@@ -283,7 +288,7 @@ window.sendPostFirebase = (callback,currentUser,textPost,privacy) => {
       showProfile(currentUser);
 }
 
-window.clickPost = (postId,likes,usid) => {
+window.clickPost = (postId) => {
   const userId = firebase.auth().currentUser.uid;
   const dbPost = firebase.database().ref('posts/' + postId);
 calculateLike(dbPost, userId);
