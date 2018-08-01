@@ -1,59 +1,59 @@
-const formRegisterUser = document.getElementById('register-user');
+/* global firebase */
 const btnEnviar = document.getElementById('submitbutton');
 const email = document.getElementById('email');
 const name = document.getElementById('usr');
 const password = document.getElementById('pwd');
 const repeatPassword = document.getElementById('rpwd');
 const valido = document.getElementById('emailOK');
-const validusr = document.getElementById('usrOK');
 const valid = document.getElementById('rpwdOK');
 const validpwd = document.getElementById('pwdOK');
 const menssageErrorEmail = document.getElementById('mesage');
 const menssageErrorPassword = document.getElementById('mesage-pwd');
 const menssageErrorLogin = document.getElementById('mesage-login');
 const signInBtn = document.getElementById('signInButton');
-const formSignIn = document.getElementById("signIn");
-const formSingUp = document.getElementById("signUp");
-const linkSignUp = document.getElementById("signUpLink");
-const linkSignIn = document.getElementById("signInLink");
+const formSignIn = document.getElementById('signIn');
+const formSingUp = document.getElementById('signUp');
+const linkSignUp = document.getElementById('signUpLink');
+const linkSignIn = document.getElementById('signInLink');
 const btnSignUpFacebook = document.getElementById('signFacebook');
 const btnSignUpGoogle = document.getElementById('signGoogle');
 const btnSignInFacebook = document.getElementById('signIFacebook');
 const btnSignInGoogle = document.getElementById('signIGoogle');
 
-//cambiando de clases a los formularios
+// cambiando de clases a los formularios
 const replaceClass = (formFirst, formSecond) => {
   formFirst.classList.replace('block', 'none');
   formSecond.classList.replace('none', 'block');
-}
+};
 
-//observador de firebase
+// observador de firebase
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    //ESTAMOS LOGUEADOS
+    // ESTAMOS LOGUEADOS
     if (user.displayName !== null) {
-      window.location.href = 'wall.html'
+      window.location.href = 'wall.html';
     }
   } else {
-  //NO ESTAMOS LOGUEADOS
+    // NO ESTAMOS LOGUEADOS
   }
 });
-//funcion para añadir clases de los iconos a usar
+
+// funcion para añadir clases de los iconos a usar
 const addClassIcon = (inputElement, spanElement) => {
   spanElement.classList.add('fa-times');
   inputElement.classList.add('danger');
-} 
-//funcion de remplazo de clases a los iconos para cuando es valido lo que escribio en el input
+}; 
+// funcion de remplazo de clases a los iconos para cuando es valido lo que escribio en el input
 const replaceClassIconValid = (inputElement, spanElement) => {
-  inputElement.classList.replace('danger', 'valid')
+  inputElement.classList.replace('danger', 'valid');
   spanElement.classList.replace('fa-times', 'fa-check');
-}
-//funcion de remplazo de clases a los iconos para cuando es incorrecto lo que escribio en el input
+};
+// funcion de remplazo de clases a los iconos para cuando es incorrecto lo que escribio en el input
 const replaceClassIconDanger = (inputElement, spanElement) => {
   inputElement.classList.replace('valid', 'danger');
   spanElement.classList.replace('fa-check', 'fa-times');
-}
-//Mensajes de Error
+};
+// Mensajes de Error
 const handleError = (error) => {
   switch (error.message) {
     case 'The email address is badly formatted.':

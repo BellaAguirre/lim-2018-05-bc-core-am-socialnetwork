@@ -1,3 +1,4 @@
+/* global firebase */
 //Cerrando sesion
 window.logoutwall = (callback) => {
   firebase.auth().signOut().then(() => {

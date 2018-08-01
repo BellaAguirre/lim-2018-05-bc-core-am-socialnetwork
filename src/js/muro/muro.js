@@ -1,3 +1,4 @@
+/* global firebase */
 const textPost = document.getElementById('postText');
 const privacityPost = document.getElementById('selectPrivacy'); 
 const btnEnviar = document.getElementById('publicButton');

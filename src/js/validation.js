@@ -1,7 +1,7 @@
 window.validateEmail = (email) => {
-    const expression = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return expression.test(email);
-}
+  const expression = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return expression.test(email);
+};
 
 window.passwordLength = (password) => {
   if (password.length >= 6) {
@@ -9,7 +9,7 @@ window.passwordLength = (password) => {
   } else {
     return false;
   }
-}
+};
 
 window.passwordRepeatValid = (passwordRepeat, password) => {
   if (password === passwordRepeat) {
@@ -17,4 +17,4 @@ window.passwordRepeatValid = (passwordRepeat, password) => {
   } else {
     return false;
   }
-}
+};
